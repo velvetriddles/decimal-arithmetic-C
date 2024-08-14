@@ -22,11 +22,12 @@ The russian version of the task can be found in the repository.
 
 Planet Earth, 1990s. 
 
-The world economy is growing exponentially, the stock market is increasing year on year, more and more companies are going public and their shares are being quoted. The number of users, the number of transactions, the price, the commission, the interest, the calculation of technical financial indicators... It's hard to overestimate the accuracy of all this data, and there are serious problems with the current outdated data types used in the financial sector.
+The world economy is growing exponentially, the stock market is growing year by year, more and more companies are going public and their shares are listed. The number of users, the number of transactions, the price, the commission, the interest, the calculation of technical financial indicators... It's hard to overestimate the accuracy of all this data, and there are serious problems with the current outdated data types used in the financial sector.
 
-Millions of dollars are lost every year due to a miscalculation in the standard IEEE 754 (float), which simply disappears from the system. 
+Millions of dollars are lost every year due to a miscalculation in the IEEE 754 (float) standard that simply disappears from the system. 
 
-Along with the FIX (Financial Information eXchange) protocol, which is being developed to process data between the broker and the exchange, another tool is needed to transfer and store data. \
+In addition to the FIX (Financial Information eXchange) protocol, which is being developed to handle data between the broker and the exchange, another tool is needed to transfer and store data.
+
 At the follow-up meeting:
 
 *"So, gentlemen, please note that our group of specialists, who have already proven themselves in many successful projects, have been commissioned by the government to develop a completely new type of data, code-named Decimal. Its purpose is to make it possible to significantly reduce, and in some cases eliminate, errors in the world's financial transactions for several decades. It is required to describe all the necessary logical and arithmetic operations that would allow the necessary calculations to be performed quickly and conveniently."*
@@ -49,37 +50,37 @@ At the follow-up meeting:
 
 ## Introduction
 
-In this project you will implement the s21_decimal.h library in the C programming language. This library should add the ability to work with the "decimal" type, which is not in the language standard. Nevertheless, this type is critically important. For financial calculations, for example, where errors of calculations characteristic of types with floating point are unacceptable. As part of the project you will work with the tasks of processing financial information, dive into the issues of internal representation of different types of data, and solidify knowledge of structured programming.
+In this project you will implement the library s21_decimal.h in the programming language C. The purpose of this library is to add the ability to work with the "decimal" type, which is not in the language standard. However, this type is very important. For example, for financial calculations, where calculation errors characteristic of floating-point types are unacceptable. As part of the project, you will work with the tasks of processing financial information, dive into the issues of internal representation of different types of data, and solidify your knowledge of structured programming.
 
 ## Chapter II
 
 ## Information
 
-The Decimal value type represents decimal numbers ranging from positive 79,228,162,514,264,337,593,543,950,335 to negative 79,228,162,514,264,337,593,543,950,335. The default value of a Decimal is 0. The Decimal value type is suitable for financial calculations that require a large number of significant integral and fractional digits and no rounding errors. The Decimal type does not eliminate the need for rounding. Rather, it minimises rounding errors.
+The Decimal value type represents decimal numbers from positive 79,228,162,514,264,337,593,543,950,335 to negative 79,228,162,514,264,337,593,543,950,335. The default value of a Decimal is 0. The Decimal value type is suitable for financial calculations that require a large number of significant integral and fractional digits and that do not have rounding errors. The Decimal type does not eliminate the need for rounding. Rather, it minimizes rounding errors.
 
 When the result of the division and multiplication is passed to the Round method, the result suffers no loss of precision.
 
-A decimal number is a floating point value that consists of a sign, a numerical value where each digit in the value ranges from 0 to 9, and a scaling factor that indicates the position of a floating decimal point that separates the integral and fractional parts of the numerical value.
+A Decimal number is a floating point value that consists of a sign, a numerical value where each digit in the value ranges from 0 to 9, and a scaling factor that indicates the position of a floating decimal point that separates the integral and fractional parts of the numerical value.
 
-The binary representation of a Decimal value consists of a 1-bit sign, a 96-bit integer number, and a scaling factor used to divide the 96-bit integer and specify what portion of it is a decimal fraction. The scaling factor is implicitly the number 10, raised to an exponent ranging from 0 to 28. Therefore, the binary representation of a Decimal value the form, ((-2^96 to 2^96) / 10^(0 to 28)), where -(2^96-1) is equal to MinValue, and 2^96-1 is equal to MaxValue.
+The binary representation of a Decimal value consists of a 1-bit sign, a 96-bit integer, and a scaling factor that is used to divide the 96-bit integer and specify what portion of it is a Decimal fraction. The scaling factor is implicitly the number 10 raised to an exponent between 0 and 28. Therefore, the binary representation of a Decimal value has the form ((-2^96 to 2^96) / 10^(0 to 28)), where -(2^96-1) is equal to MinValue and 2^96-1 is equal to MaxValue.
 
-The scaling factor also can preserve any trailing zeros in a Decimal number. Trailing zeros do not affect the value of a Decimal number in arithmetic or comparison operations. 
+The scaling factor can also preserve any trailing zeros in a Decimal number. Trailing zeros do not affect the value of a Decimal number in arithmetic or comparison operations. 
 
 ### Binary representation
 
-The binary representation of a Decimal number consists of a 1-bit sign, a 96-bit integer number, and a scaling factor used to divide the integer number and specify what portion of it is a decimal fraction. The scaling factor is implicitly the number 10, raised to an exponent ranging from 0 to 28.
+The binary representation of a Decimal number consists of a 1-bit sign, a 96-bit integer number, and a scaling factor that is used to divide the integer number and specify what portion of it is a decimal fraction. The scaling factor is implicitly the number 10 raised to an exponent between 0 and 28.
 
-Decimal number can be implemented as a four-element array of 32-bit signed integers (`int bits[4];`).
+The Decimal number can be implemented as a four-element array of 32-bit signed integers (`int bits[4];`).
 
-`bits[0]`, `bits[1]`, and `bits[2]` contain the low, middle, and high 32 bits of the 96-bit integer number accordingly.
+`bits[0]`, `bits[1]`, and `bits[2]` contain the low, middle, and high 32 bits of the 96-bit integer, respectively.
 
-`bits[3]` contains the scale factor and sign, and consists of following parts:
-- Bits 0 to 15, the lower word, are unused and must be zero.
-- Bits 16 to 23 must contain an exponent between 0 and 28, which indicates the power of 10 to divide the integer number.
-- Bits 24 to 30 are unused and must be zero.
-- Bit 31 contains the sign; 0 meaning positive, and 1 meaning negative.
+`bits[3]` contains the scaling factor and sign and consists of the following parts:
+- Bits 0 through 15, the lower word, are unused and must be zero.
+- Bits 16 to 23 must contain an exponent between 0 and 28, indicating the power of 10 to divide the integer.
+- Bits 24 through 30 are unused and must be zero.
+- Bit 31 contains the sign; 0 is positive and 1 is negative.
 
-Note that the bit representation differentiates between negative and positive zero. These values can be treated as being equal in all operations.
+Note that the bit representation distinguishes between negative and positive zeros. These values can be treated as equal in all operations.
 
 ### Example:
 
